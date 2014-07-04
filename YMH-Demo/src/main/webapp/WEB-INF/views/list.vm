@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>Home</title>
+	<script type="text/javascript" src="resources/js/jquery-1.7.1.min.js"></script>	
+</head>
+<body>
+    <h1>
+    	游戏-服务器联动效果!  
+    </h1>
+	
+    <P> 
+    	<lable for="games">游戏：</lable>
+    	<select id="games">
+    		<option value="-1">请选择游戏</option>
+    		#foreach($item in $gameList)
+    			<option value="$item.Code">$item.Name</option>
+    		#end	
+    	</select>
+    	
+    	<lable for="games">区服：</label>
+    	<select id="servers">
+    		<option value="-1">请选择区服</option>
+    	</select>
+    </P> 	
+	
+	<script type="text/javascript">
+		jQuery(function(){
+		$("#games").on("change",function(){
+			jQuery.ajax({
+				url:"getGameServerList",
+				type:"get",
+				dataType: "json",
+				data:{gameId:$(this).val()},
+				success:function(data){
+					var html='';
+					html+='<option value="-1">请选择区服</option>'
+
+					for(var o in data){
+						html+='<option value="'+data[o]["code"]+'">'+data[o]["name"]+'</option>'
+					}
+					$("#servers").empty().html(html);
+				}			
+			})
+		});
+	});
+	</script>
+</body>
+</html>
